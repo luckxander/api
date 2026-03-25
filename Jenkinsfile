@@ -19,9 +19,7 @@ pipeline {
         stage('Run Python Script') {
             steps {
                 // Execute the Python script using a shell command
-                bat 'api.py'
-                // For Windows, use 'bat' instead of 'sh'
-                // bat 'python your_script_name.py'
+                bat '-u api.py'
             }
         }
     }
