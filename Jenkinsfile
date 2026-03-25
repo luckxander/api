@@ -23,7 +23,7 @@ pipeline {
                 timeout(time: 1, unit: 'MINUTES') {
                     // Execute the Python script and print real time output
                     //bat 'python -u api.py'
-                    bat 'python -u C:/Python/api/api.py'
+                    bat 'python -u C:\\Python\\api\\api.py'
                 }
             }
         }
