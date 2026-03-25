@@ -165,7 +165,8 @@ def testCase5delete(endpoint, method, updated_data, headers):
    
 result = testCase5delete("https://jsonplaceholder.typicode.com/posts/1", "DELETE", updated_data={"id": 12}, headers = {"Content-Type": "application/json; charset=utf-8"})
 print(result)
-sys.exit()
+
+sys.exit(0)
 
 
 
