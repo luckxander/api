@@ -21,10 +21,8 @@ pipeline {
             steps {
                 // Automatically aborts after 10 minutes
                 timeout(time: 1, unit: 'MINUTES') {
-                    // Capture the script output
-                    bat(returnStdout: true, script: 'api.py').trim()
                     // Execute the Python script using a shell command
-                    //bat 'api.py'
+                    bat 'api.py'
                 }
             }
         }
