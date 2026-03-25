@@ -13,7 +13,7 @@ pipeline {
             steps {
                 // The pipeline automatically checks out code if configured as 'Pipeline script from SCM'
                 // For a separate step, use the git DSL command:
-                git branch: 'main', url: 'https://github.com'
+                git branch: 'main', url: 'https://github.com/luckxander/api'
             }
         }
         stage('Run Python Script') {
