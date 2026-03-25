@@ -18,9 +18,9 @@ pipeline {
             }
         }
         stage('Run Python Script') {
+            // Automatically aborts after 10 minutes
+            timeout(time: 1, unit: 'MINUTES')
             steps {
-                // Automatically aborts after 10 minutes
-                timeout(time: 1, unit: 'MINUTES') { 
                 // Execute the Python script using a shell command
                 bat 'api.py'
             }
