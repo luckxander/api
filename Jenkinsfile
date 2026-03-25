@@ -19,7 +19,7 @@ pipeline {
         stage('Run Python Script') {
             steps {
                 // Execute the Python script using a shell command
-                bat '-u api.py'
+                bat 'api.py'
             }
         }
     }
