@@ -22,7 +22,7 @@ pipeline {
                 // Automatically aborts after 10 minutes
                 timeout(time: 1, unit: 'MINUTES') {
                     // Capture the script output
-                    def scriptOutput = bat(returnStdout: true, script: 'api.py').trim()
+                    scriptOutput = bat(returnStdout: true, script: 'api.py').trim()
                     // Execute the Python script using a shell command
                     //bat 'api.py'
                 }
