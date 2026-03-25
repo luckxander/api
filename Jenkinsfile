@@ -25,5 +25,26 @@ pipeline {
                 }
             }
         }
+                stage('Build and Report') {
+            steps {
+                // ... your build steps that generate HTML ...
+                sh 'mkdir -p build_reports'
+                sh 'echo "<html><body><h1>Build Summary</h1></body></html>" > build_reports/index.html'
+            }
+        }
+        post {
+            always {
+                publishHTML([
+                    target([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'build_reports', // Directory relative to workspace
+                    reportFiles: 'index.html',  // Index file
+                    reportName: 'HTML Report'   // Name of the link in Jenkins UI
+                    ])
+                ])
+            }
+        }
     }
 }
