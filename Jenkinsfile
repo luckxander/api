@@ -1,5 +1,5 @@
 pipeline {
-    agent any // Or use a specific agent/Docker image, e.g., agent { docker { image 'python:3.9.7' } }
+    agent {label 'windows'}
     options {
         // Required to clean before the default SCM checkout
         skipDefaultCheckout(true) 
@@ -19,10 +19,15 @@ pipeline {
         }
         stage('Run Python Script') {
             steps {
-                // Automatically aborts after 10 minutes
-                timeout(time: 1, unit: 'MINUTES') {
-                    // Execute the Python script using a shell command
-                    bat 'api.py'
+                // // Automatically aborts after 10 minutes
+                // timeout(time: 1, unit: 'MINUTES') {
+                //     // Execute the Python script using a shell command
+                //     bat 'api.py'
+                    script {
+                        nstdout = bat(returnStdout: true, script: 'api.py').trim()                                
+                        println("stdout ####" + nstdout + "###########")                  
+
+                    }
                 }
             }
         }
