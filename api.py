@@ -1,5 +1,6 @@
 import requests # Lib to run requests
 import json # Lib to format Json files
+import sys # Lib help exit the script gracefully
 
 # Fake API for testing from https://jsonplaceholder.typicode.com/
 
@@ -164,6 +165,9 @@ def testCase5delete(endpoint, method, updated_data, headers):
    
 result = testCase5delete("https://jsonplaceholder.typicode.com/posts/1", "DELETE", updated_data={"id": 12}, headers = {"Content-Type": "application/json; charset=utf-8"})
 print(result)
+sys.exit()
+
+
 
 
 
