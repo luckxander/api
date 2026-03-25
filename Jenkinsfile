@@ -28,8 +28,8 @@ pipeline {
                 stage('Build and Report') {
             steps {
                 // ... your build steps that generate HTML ...
-                sh 'mkdir -p build_reports'
-                sh 'echo "<html><body><h1>Build Summary</h1></body></html>" > build_reports/index.html'
+                bat 'mkdir -p build_reports'
+                bat 'echo "<html><body><h1>Build Summary</h1></body></html>" > build_reports/index.html'
             }
         }
         post {
