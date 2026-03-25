@@ -28,7 +28,6 @@ pipeline {
                         println("stdout ####" + nstdout + "###########")                  
 
                     }
-                }
             }
         }
     }
