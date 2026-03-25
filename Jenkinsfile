@@ -24,8 +24,8 @@ pipeline {
                 //     // Execute the Python script using a shell command
                 //     bat 'api.py'
                     script {
-                        nstdout = bat(returnStdout: true, script: 'api.py').trim()                                
-                        println("stdout ####" + nstdout + "###########")                  
+                        println(nstdout = bat(returnStdout: true, script: 'api.py').trim())                                
+                        //println("stdout ####" + nstdout + "###########")                  
 
                     }
                 }
