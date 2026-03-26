@@ -37,8 +37,6 @@ pipeline {
                 // You can run any command and append its output
                 bat 'dir >> output_report.html' 
                 bat 'echo "</pre>" >> output_report.html'
-                //bat 'mkdir -p build_reports'
-                //bat 'echo "<html><body><h1>Build Summary</h1></body></html>" > build_reports/index.html'
             }
         }
         stage('Publish HTML Report') {
@@ -49,7 +47,7 @@ pipeline {
                         allowMissing: false,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
-                        reportDir: '.', // Directory containing the report file
+                        reportDir: '.', // Directory containing the report file (root)
                         reportFiles: 'output_report.html', // The specific file to display
                         reportName: 'Build Step Output' // The name of the link in Jenkins UI
                     ]
@@ -58,18 +56,7 @@ pipeline {
         }
     }
     post {
-        // Send email on failure
-        failure {
-                emailext (
-                    subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-                    body: "Build failed. Check it here: ${env.BUILD_URL}",
-                    to: "lusenabh@gmail.com",
-                    recipientProviders: [
-                        culprits(), 
-                        requestor()
-                    ]
-                )
-        }
+        try{
         // Send email on success
         success {
                 emailext (
@@ -82,5 +69,30 @@ pipeline {
                     ]
                 )
         }
+        }
+        // Send email on failure
+        failure {
+                emailext (
+                    subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                    body: "Build failed. Check it here: ${env.BUILD_URL}",
+                    to: "lusenabh@gmail.com",
+                    recipientProviders: [
+                        culprits(), 
+                        requestor()
+                    ]
+                )
+        }
+        catch (Exception e) {
+            echo "Caught an error: ${e.message}"
+        }
+        finally {
+        // This block always runs, whether an exception occurred or not
+        echo 'Cleanup or final reporting happens here.'
+        if (currentBuild.result == 'FAILURE') {
+            echo 'Performing failure-specific cleanup in finally block.'
+        } else {
+            echo 'Performing general cleanup in finally block.'
+        }
+
     }
 }
