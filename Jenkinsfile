@@ -93,5 +93,6 @@ pipeline {
             } else {
                 echo 'Performing general cleanup in finally block.'
             }
+        }
     }
 }
