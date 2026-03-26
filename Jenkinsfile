@@ -25,17 +25,32 @@ pipeline {
                 }
             }
         }
-        stage('Build and Report') {
+        stage('Generate Report') {
             steps {
-                // ... your build steps that generate HTML ...
+                bat 'echo "<h1>Build Console Output</h1><pre>" > output_report.html'
+                bat 'echo "Running build steps..." >> output_report.html'
+                bat 'echo "Step 1: Compiling code..." >> output_report.html'
+                // You can run any command and append its output
+                bat 'ls -al >> output_report.html' 
+                bat 'echo "</pre>" >> output_report.html'
                 bat 'mkdir -p build_reports'
                 bat 'echo "<html><body><h1>Build Summary</h1></body></html>" > build_reports/index.html'
             }
         }
-    }
-    post {
-        always {
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'build_reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: 'HTML Report', useWrapperFileDirectly: true])
+        stage('Publish HTML Report') {
+            steps {
+                // Use the publishHTML step to archive and display the generated file
+                publishHTML (
+                    target: [
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: '.', // Directory containing the report file
+                        reportFiles: 'output_report.html', // The specific file to display
+                        reportName: 'Build Step Output' // The name of the link in Jenkins UI
+                    ]
+                )
+            }
         }
     }
 }
