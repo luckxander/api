@@ -57,4 +57,23 @@ pipeline {
             }
         }
     }
+    post {
+        // Send email on failure
+        failure {
+            emailext subject: "FAILED: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                     body: "Build failed! View the log at: ${env.BUILD_URL}console",
+                     to: "lusenabh@gmail.com",
+                     recipientProviders: [[$class: 'CulpritsRecipientProvider']] // Emails users who committed changes
+        }
+        // Send email on success
+        success {
+            emailext subject: "SUCCESSFUL: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                     body: "Build successful! View the details at: ${env.BUILD_URL}",
+                     to: "lusenabh@gmail.com"
+        }
+        // Always run this section
+        always {
+            // Optional: Actions that always run
+        }
+    }
 }
