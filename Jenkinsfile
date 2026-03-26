@@ -33,8 +33,8 @@ pipeline {
                 // You can run any command and append its output
                 bat 'dir >> output_report.html' 
                 bat 'echo "</pre>" >> output_report.html'
-                bat 'mkdir -p build_reports'
-                bat 'echo "<html><body><h1>Build Summary</h1></body></html>" > build_reports/index.html'
+                //bat 'mkdir -p build_reports'
+                //bat 'echo "<html><body><h1>Build Summary</h1></body></html>" > build_reports/index.html'
             }
         }
         stage('Publish HTML Report') {
