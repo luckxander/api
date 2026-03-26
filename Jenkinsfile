@@ -68,7 +68,8 @@ pipeline {
                                     requestor()
                                 ]
                     )
-                } else if (currentBuild.result == 'FAILURE') {
+                } 
+                else if (currentBuild.result == 'FAILURE') {
                     emailext (
                                 subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
                                 body: "Build failed. Check it here: ${env.BUILD_URL}",
@@ -78,7 +79,8 @@ pipeline {
                                     requestor()
                                 ]
                     )
-                } else {
+                } 
+                else {
                     echo "The build finished with an unusual result: ${currentBuild.result}"
                 }
             }
