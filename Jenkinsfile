@@ -83,7 +83,7 @@ pipeline {
                     )
                 } 
                 else {
-                    echo "The build finished with an unusual result: ${currentBuild.result}"
+                    echo "Build finished with an unusual result: ${currentBuild.result}"
                 }
             }
         }
