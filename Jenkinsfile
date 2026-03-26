@@ -58,25 +58,33 @@ pipeline {
         }
         stage('Email Report'){
             steps{
-            post {
-            // Send email on failure
-            failure {
-                emailext
-                        subject: "FAILED: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                        body: "Build failed! View the log at: ${env.BUILD_URL}console",
-                        to: "lusenabh@gmail.com",
-                        recipientProviders: [[$class: 'CulpritsRecipientProvider']] 
-            }
-            // Send email on success
-            success {
-                emailext
-                        subject: "SUCCESSFUL: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                        body: "Build successful! View the details at: ${env.BUILD_URL}",
-                        to: "lusenabh@gmail.com"
-            }
-            }
+                post {
+                    // Send email on failure
+                    failure {
+                        emailext (
+                            subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                            body: "Build failed. Check it here: ${env.BUILD_URL}",
+                            to: "lusenabh@gmail.com",
+                            recipientProviders: [
+                                culprits(), 
+                                requestor()
+                            ]
+                        )
+                    }
+                    // Send email on success
+                    success {
+                        emailext (
+                            subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                            body: "Build successful! View the details at: ${env.BUILD_URL}",
+                            to: "lusenabh@gmail.com",
+                            recipientProviders: [
+                                culprits(), 
+                                requestor()
+                            ]
+                        )
+                    }
+                }
             }
         }
     }
-
 }
