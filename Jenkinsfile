@@ -31,7 +31,7 @@ pipeline {
                 bat 'echo "Running build steps..." >> output_report.html'
                 bat 'echo "Step 1: Compiling code..." >> output_report.html'
                 // You can run any command and append its output
-                bat 'ls -al >> output_report.html' 
+                bat 'dir >> output_report.html' 
                 bat 'echo "</pre>" >> output_report.html'
                 bat 'mkdir -p build_reports'
                 bat 'echo "<html><body><h1>Build Summary</h1></body></html>" > build_reports/index.html'
