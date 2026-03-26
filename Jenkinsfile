@@ -56,30 +56,6 @@ pipeline {
         }
     }
     post {
-        // Send email on success
-        success {
-                emailext (
-                    subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-                    body: "Build successful! View the details at: ${env.BUILD_URL}",
-                    to: "lusenabh@gmail.com",
-                    recipientProviders: [
-                        culprits(), 
-                        requestor()
-                    ]
-                )
-        }
-        // Send email on failure
-        failure {
-                emailext (
-                    subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-                    body: "Build failed. Check it here: ${env.BUILD_URL}",
-                    to: "lusenabh@gmail.com",
-                    recipientProviders: [
-                        culprits(), 
-                        requestor()
-                    ]
-                )
-        }
         always {
             script {
                 if (currentBuild.result == 'SUCCESS') {
@@ -91,5 +67,29 @@ pipeline {
                 }
             }
         }
+        // // Send email on success
+        // success {
+        //         emailext (
+        //             subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+        //             body: "Build successful! View the details at: ${env.BUILD_URL}",
+        //             to: "lusenabh@gmail.com",
+        //             recipientProviders: [
+        //                 culprits(), 
+        //                 requestor()
+        //             ]
+        //         )
+        // }
+        // // Send email on failure
+        // failure {
+        //         emailext (
+        //             subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+        //             body: "Build failed. Check it here: ${env.BUILD_URL}",
+        //             to: "lusenabh@gmail.com",
+        //             recipientProviders: [
+        //                 culprits(), 
+        //                 requestor()
+        //             ]
+        //         )
+        // }
     }
 }
