@@ -56,42 +56,39 @@ pipeline {
         }
     }
     post {
-        try{
-            // Send email on success
-            success {
-                    emailext (
-                        subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-                        body: "Build successful! View the details at: ${env.BUILD_URL}",
-                        to: "lusenabh@gmail.com",
-                        recipientProviders: [
-                            culprits(), 
-                            requestor()
-                        ]
-                    )
-            }
-            // Send email on failure
-            failure {
-                    emailext (
-                        subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-                        body: "Build failed. Check it here: ${env.BUILD_URL}",
-                        to: "lusenabh@gmail.com",
-                        recipientProviders: [
-                            culprits(), 
-                            requestor()
-                        ]
-                    )
-            }
+        // Send email on success
+        success {
+                emailext (
+                    subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                    body: "Build successful! View the details at: ${env.BUILD_URL}",
+                    to: "lusenabh@gmail.com",
+                    recipientProviders: [
+                        culprits(), 
+                        requestor()
+                    ]
+                )
         }
-        catch (Exception e) {
-            echo "Caught an error: ${e.message}"
+        // Send email on failure
+        failure {
+                emailext (
+                    subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                    body: "Build failed. Check it here: ${env.BUILD_URL}",
+                    to: "lusenabh@gmail.com",
+                    recipientProviders: [
+                        culprits(), 
+                        requestor()
+                    ]
+                )
         }
-        finally {
-            // This block always runs, whether an exception occurred or not
-            echo 'Cleanup or final reporting happens here.'
-            if (currentBuild.result == 'FAILURE') {
-                echo 'Performing failure-specific cleanup in finally block.'
-            } else {
-                echo 'Performing general cleanup in finally block.'
+        always {
+            script {
+                if (currentBuild.result == 'SUCCESS') {
+                    echo 'The build was a success.'
+                } else if (currentBuild.result == 'FAILURE') {
+                    echo 'The build was a failure.'
+                } else {
+                    echo "The build finished with result: ${currentBuild.result}"
+                }
             }
         }
     }
