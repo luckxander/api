@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Git Checkout') {
             steps {
-                // The pipeline automatically checks out code if configured as 'Pipeline script from SCM'
+                // The pipeline automatically checks out code if configured as Pipeline script from SCM'
                 git branch: 'main', url: 'https://github.com/luckxander/api'
             }
         }
