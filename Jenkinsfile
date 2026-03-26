@@ -59,7 +59,7 @@ pipeline {
         always {
             script {
                 if (currentBuild.result == 'SUCCESS') {
-                    echo 'Build successful! Trying to send an email'
+                    echo 'Build successful! You wil receive an email'
                     emailext (
                                 subject: "Success: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
                                 body: "Build successful! View the details at: ${env.BUILD_URL}",
@@ -71,10 +71,10 @@ pipeline {
                     )
                 } 
                 else if (currentBuild.result == 'FAILURE') {
-                    echo 'Build failure! Trying to send an email'
+                    echo 'Build failure! You wil receive an email'
                     emailext (
-                                subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-                                body: "Build failed. Check it here: ${env.BUILD_URL}",
+                                subject: "Build Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                                body: "Build failed. Check the console output here: ${env.BUILD_URL}",
                                 to: "lusenabh@gmail.com",
                                 recipientProviders: [
                                     culprits(), 
@@ -84,6 +84,15 @@ pipeline {
                 } 
                 else {
                     echo "Build finished with an unusual result: ${currentBuild.result}"
+                    emailext (
+                                subject: "Unusual build result: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                                body: "Build finished with an unusual result. Check the console output here: ${env.BUILD_URL}",
+                                to: "lusenabh@gmail.com",
+                                recipientProviders: [
+                                    culprits(), 
+                                    requestor()
+                                ]
+                    )                    
                 }
             }
         }
