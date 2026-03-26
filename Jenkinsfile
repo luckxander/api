@@ -59,7 +59,7 @@ pipeline {
         always {
             script {
                 if (currentBuild.result == 'SUCCESS') {
-                    echo 'Build successful! You wil receive an email'
+                    echo 'Build successful! It will send an email'
                     emailext (
                                 subject: "Success: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
                                 body: "Build successful! View the details at: ${env.BUILD_URL}",
@@ -71,7 +71,7 @@ pipeline {
                     )
                 } 
                 else if (currentBuild.result == 'FAILURE') {
-                    echo 'Build failure! You wil receive an email'
+                    echo 'Build failure! It will send an email'
                     emailext (
                                 subject: "Build Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
                                 body: "Build failed. Check the console output here: ${env.BUILD_URL}",
@@ -83,7 +83,7 @@ pipeline {
                     )
                 } 
                 else {
-                    echo "Build finished with an unusual result: ${currentBuild.result}"
+                    echo "Build finished with an unusual result: ${currentBuild.result}. It will send "
                     emailext (
                                 subject: "Unusual build result: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
                                 body: "Build finished with an unusual result. Check the console output here: ${env.BUILD_URL}",
