@@ -24,7 +24,7 @@ pipeline {
             steps {
                 // Automatically aborts after 10 minutes
                 timeout(time: 1, unit: 'MINUTES') {
-                    // Execute the Python script and print real time output (-u)
+                    // Execute the Python script and print real time output
                     bat 'python -u C:\\Python\\api\\api.py'
                 }
             }
@@ -33,10 +33,12 @@ pipeline {
             steps {
                 bat 'echo "<h1>Build Console Output</h1><pre>" > output_report.html'
                 bat 'echo "Running build steps..." >> output_report.html'
-                bat 'echo "Compiling code..." >> output_report.html'
+                bat 'echo "Step 1: Compiling code..." >> output_report.html'
                 // You can run any command and append its output
                 bat 'dir >> output_report.html' 
                 bat 'echo "</pre>" >> output_report.html'
+                //bat 'mkdir -p build_reports'
+                //bat 'echo "<html><body><h1>Build Summary</h1></body></html>" > build_reports/index.html'
             }
         }
         stage('Publish HTML Report') {
@@ -52,6 +54,27 @@ pipeline {
                         reportName: 'Build Step Output' // The name of the link in Jenkins UI
                     ]
                 )
+            }
+        }
+        stage('Email Report'){
+            steps{
+            post {
+            // Send email on failure
+            failure {
+                emailext
+                        subject: "FAILED: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                        body: "Build failed! View the log at: ${env.BUILD_URL}console",
+                        to: "lusenabh@gmail.com",
+                        recipientProviders: [[$class: 'CulpritsRecipientProvider']] 
+            }
+            // Send email on success
+            success {
+                emailext
+                        subject: "SUCCESSFUL: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                        body: "Build successful! View the details at: ${env.BUILD_URL}",
+                        to: "lusenabh@gmail.com"
+            }
+            }
             }
         }
     }
