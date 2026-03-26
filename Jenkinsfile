@@ -56,6 +56,7 @@ pipeline {
                 )
             }
         }
+        stage('Email Report'){
         post {
             // Send email on failure
             failure {
@@ -74,6 +75,7 @@ pipeline {
                         to: "lusenabh@gmail.com"
                 )
             }
+        }
         }
     }
 
