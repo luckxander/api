@@ -59,6 +59,7 @@ pipeline {
         always {
             script {
                 if (currentBuild.result == 'SUCCESS') {
+                    echo 'Build successful! Trying to send an email'
                     emailext (
                                 subject: "Success: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
                                 body: "Build successful! View the details at: ${env.BUILD_URL}",
@@ -70,6 +71,7 @@ pipeline {
                     )
                 } 
                 else if (currentBuild.result == 'FAILURE') {
+                    echo 'Build failure! Trying to send an email'
                     emailext (
                                 subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
                                 body: "Build failed. Check it here: ${env.BUILD_URL}",
