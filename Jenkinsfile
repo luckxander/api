@@ -57,7 +57,8 @@ pipeline {
             }
         }
         stage('Email Report'){
-        post {
+            steps{
+            post {
             // Send email on failure
             failure {
                 emailext(
@@ -75,7 +76,8 @@ pipeline {
                         to: "lusenabh@gmail.com"
                 )
             }
-        }
+            }
+            }
         }
     }
 
