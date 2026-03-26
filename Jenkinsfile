@@ -2,7 +2,7 @@ pipeline {
     agent any
     triggers {
         // Run daily at 1:00 AM
-        cron('0 1 * * *') 
+        cron('TZ=America/Sao_Paulo\\n0 1 * * *')
     }
     options {
         // Required to clean before the default SCM checkout
