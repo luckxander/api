@@ -59,37 +59,29 @@ pipeline {
         always {
             script {
                 if (currentBuild.result == 'SUCCESS') {
-                    echo 'The build was a success.'
+                    emailext (
+                                subject: "Success: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                                body: "Build successful! View the details at: ${env.BUILD_URL}",
+                                to: "lusenabh@gmail.com",
+                                recipientProviders: [
+                                    culprits(), 
+                                    requestor()
+                                ]
+                    )
                 } else if (currentBuild.result == 'FAILURE') {
-                    echo 'The build was a failure.'
+                    emailext (
+                                subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                                body: "Build failed. Check it here: ${env.BUILD_URL}",
+                                to: "lusenabh@gmail.com",
+                                recipientProviders: [
+                                    culprits(), 
+                                    requestor()
+                                ]
+                    )
                 } else {
-                    echo "The build finished with result: ${currentBuild.result}"
+                    echo "The build finished with an unusual result: ${currentBuild.result}"
                 }
             }
         }
-        // // Send email on success
-        // success {
-        //         emailext (
-        //             subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-        //             body: "Build successful! View the details at: ${env.BUILD_URL}",
-        //             to: "lusenabh@gmail.com",
-        //             recipientProviders: [
-        //                 culprits(), 
-        //                 requestor()
-        //             ]
-        //         )
-        // }
-        // // Send email on failure
-        // failure {
-        //         emailext (
-        //             subject: "Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-        //             body: "Build failed. Check it here: ${env.BUILD_URL}",
-        //             to: "lusenabh@gmail.com",
-        //             recipientProviders: [
-        //                 culprits(), 
-        //                 requestor()
-        //             ]
-        //         )
-        // }
     }
 }
