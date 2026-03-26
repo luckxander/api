@@ -71,9 +71,5 @@ pipeline {
                      body: "Build successful! View the details at: ${env.BUILD_URL}",
                      to: "lusenabh@gmail.com"
         }
-        // Always run this section
-        always {
-            // Optional: Actions that always run
-        }
     }
 }
