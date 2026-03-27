@@ -31,12 +31,11 @@ pipeline {
         }
         stage('Generate Report') {
             steps {
-                bat 'echo "<h1>Build Console Output</h1><pre>" > output_report.html'
+                bat 'echo "<html><body><h1>Last Build Output Summary</h1><p>This is a custom HTML report.</p></body></html>" >> output_report.html'
                 bat 'echo "Running build steps..." >> output_report.html'
-                bat 'echo "Step 1: Compiling code..." >> output_report.html'
-                // You can run any command and append its output
-                bat 'dir >> output_report.html' 
-                bat 'echo "</pre>" >> output_report.html'
+                bat 'echo "Compiling code..." >> output_report.html'
+                bat 'echo "<p>Build Number: ${BUILD_NUMBER}</p>" >> report.html'
+
             }
         }
         stage('Publish HTML Report') {
@@ -95,6 +94,17 @@ pipeline {
                     )                    
                 }
             }
+            // Publish the generated HTML report
+            publishHTML(
+                target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: '.', // Directory relative to workspace where report.html is located
+                    reportFiles: 'report.html', // The main HTML file to display
+                    reportName: 'Custom Build Output' // Name of the link that appears in Jenkins UI
+                ]
+            )
         }
     }
 }
