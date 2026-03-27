@@ -1,62 +1,65 @@
 import requests # Lib to run requests
 import json # Lib to format Json files
-import sys # Lib help exit the script gracefully
+import sys # Lib to exit the script gracefully
+from flask import Flask, render_template # Lib to show results in template
 
 # Fake API for testing from https://jsonplaceholder.typicode.com/
 
-# Function to execute the request in all methods
-def request(endpoint, method, updated_data, headers):
+# Using Flask to
+app = Flask(__name__)
+@app.route('/')
 
+# Function to execute the request in all methods
+def request(endpoint, method, updated_data, headers):    
     api_url = endpoint 
     method = method
-
     if method == "GET":
-        response = requests.get(api_url)
-        # Check if the request was successful (status code 200)
-        if response.status_code == 200:
-            # Access the retrieved data in JSON format and convert it to a Python dictionary
-            data = response.json()
-            
-            print("Request successful. Data retrieved:")
-            
-            # Print the full data (optional: use json.dumps for formatted output)
-            #json_formatted_str = json.dumps(data, indent=2)
-            #print(json_formatted_str)
-                
-            if isinstance(data, list):
-                print(f"Fetched {len(data)} items.")
-                for item in data:
-                    # Each 'item' is likely a Python dictionary
-                    userId = item.get('userId')
-                    target_Value = 10
-                    if userId == target_Value:
-                        print(f"ID: {item.get('id')}, userId: {item.get('userId')}, title: {item.get('title')}")
-                    else:
-                        print(f"userId: is not {target_Value}, it is {userId}")
-
+        try:
+            response = requests.get(api_url)
+            # Check if the request was successful (status code 200)
+            if response.status_code == 200:
+                # Access the retrieved data in JSON format and convert it to a Python dictionary
+                data = response.json()          
+                print("Request successful. Data retrieved:")                             
+                if isinstance(data, list):
+                    print(f"Fetched {len(data)} items.")
+                    for item in data:
+                        # Each 'item' is likely a Python dictionary
+                        userId = item.get('userId')
+                        target_Value = 10
+                        if userId == target_Value:
+                            print(f"ID: {item.get('id')}, userId: {item.get('userId')}, title: {item.get('title')}")
+                        else:
+                            print(f"userId: is not {target_Value}, it is {userId}")
+                else:
+                    print("The response was not a JSON array (list). It might be an object (dictionary).")
+                show_data = response.json()
             else:
-                print("The response was not a JSON array (list). It might be an object (dictionary).")
-        else:
-            # Print an error message if the request was not successful
-            print("Error:", response.status_code, response.reason)
-            # You can also use response.raise_for_status() to raise an HTTPError for unsuccessful status codes
+                # Print an error message if the request was not successful
+                print("Error:", response.status_code, response.reason)
+                show_data = None
+        except requests.exceptions.RequestException as e:
+            show_data = None
+            print(f"An error occurred: {e}")
+            error_message = f"An error occurred: {e}"
+            # Pass the data to the HTML template
+        return render_template('show_data.html', data=show_data, error=error_message if 'error_message' in locals() else None)
+        
     
     elif method == "POST":
         try:
             # Using the 'json' parameter automatically sets the correct Content-Type and serializes the data
             response = requests.post(api_url, json=updated_data, headers=headers)
-
             # Check the status code for the response
             if response.status_code == 200:
                 print("Data created successfully! 200")
-                # Print the created resource details from the response
+                # Print the created resource details formatted with dumps
                 print("Updated user data:", json.dumps(response.json(), indent=2))
             elif response.status_code == 201:
                 print("Data created successfully! 201")
             else:
                     print(f"Failed to create data. Status code: {response.status_code}")
             print("Response text:", response.text)
-
         except requests.exceptions.RequestException as e:
             # Handle any potential network or request errors
             print(f"An error occurred: {e}")
@@ -65,18 +68,16 @@ def request(endpoint, method, updated_data, headers):
     elif method == "PUT":
         try:
             response = requests.put(api_url, json=updated_data, headers=headers)
-
             # Check the status code for the response
             if response.status_code == 200:
                 print("User full updated successfully!")
-                # Print the updated resource details from the response
+                # Print the updated resource details formatted with dumps
                 print("Updated user data:", json.dumps(response.json(), indent=2))
             elif response.status_code == 204:
                 print("User updated successfully, no content returned.")
             else:
                 print(f"Failed to update user. Status code: {response.status_code}")
                 print("Response text:", response.text)
-
         except requests.exceptions.RequestException as e:
             # Handle any potential network or request errors
             print(f"An error occurred: {e}")
@@ -85,11 +86,10 @@ def request(endpoint, method, updated_data, headers):
     elif method == "PATCH":
         try:
             response = requests.patch(api_url, json=updated_data, headers=headers)
-
             # Check the status code for the response
             if response.status_code == 200:
                 print("Title updated successfully!")
-                # Print the updated resource details from the response
+                # Print the updated resource details formatted with dumps
                 print("Updated user data:", json.dumps(response.json(), indent=2))
             elif response.status_code == 204:
                 print("Title updated successfully, no content returned.")
@@ -100,7 +100,6 @@ def request(endpoint, method, updated_data, headers):
         except requests.exceptions.RequestException as e:
             # Handle any potential network or request errors
             print(f"An error occurred: {e}")
-
 
     elif method == "DELETE":
         try:
