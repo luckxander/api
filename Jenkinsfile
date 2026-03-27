@@ -33,9 +33,7 @@ pipeline {
             steps {
                 bat 'echo "<html><body><h1>Last Build Output Summary</h1><p>This is a custom HTML report.</p></body></html>" >> output_report.html'
                 bat 'echo "Running build steps..." >> output_report.html'
-                bat 'echo "Compiling code..." >> output_report.html'
-                bat 'echo "<p>Build Number: ${env.BUILD_NUMBER}</p>" >> output_report.html'
-
+                bat 'echo "Compiling code...</p>" >> output_report.html'
             }
         }
     }
