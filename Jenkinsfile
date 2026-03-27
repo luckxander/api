@@ -56,6 +56,17 @@ pipeline {
     }
     post {
         always {
+            // Publish the generated HTML report
+            publishHTML(
+                target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: '.', // Directory relative to workspace where report.html is located
+                    reportFiles: 'report.html', // The main HTML file to display
+                    reportName: 'Custom Build Output' // Name of the link that appears in Jenkins UI
+                ]
+            )
             script {
                 if (currentBuild.result == 'SUCCESS') {
                     echo 'Build successful! It will send an email'
@@ -94,17 +105,6 @@ pipeline {
                     )                    
                 }
             }
-            // Publish the generated HTML report
-            publishHTML(
-                target: [
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: '.', // Directory relative to workspace where report.html is located
-                    reportFiles: 'report.html', // The main HTML file to display
-                    reportName: 'Custom Build Output' // Name of the link that appears in Jenkins UI
-                ]
-            )
         }
     }
 }
