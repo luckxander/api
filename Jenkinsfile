@@ -33,7 +33,7 @@ pipeline {
             steps {
                 bat 'echo "<html><body><h2>Last Build Output Summary</h2><p>This is a custom HTML report.</p></body></html>" >> output_report.html'
                 bat 'echo "Running build steps..." >> output_report.html'
-                bat 'echo "Compiling code..." >> output_report.html'
+                bat 'echo "Compiling code..."' >> output_report.html
             }
         }
     }
