@@ -34,23 +34,8 @@ pipeline {
                 bat 'echo "<html><body><h1>Last Build Output Summary</h1><p>This is a custom HTML report.</p></body></html>" >> output_report.html'
                 bat 'echo "Running build steps..." >> output_report.html'
                 bat 'echo "Compiling code..." >> output_report.html'
-                bat 'echo "<p>Build Number: ${BUILD_NUMBER}</p>" >> report.html'
+                bat 'echo "<p>Build Number: ${BUILD_NUMBER}</p>" >> output_report.html'
 
-            }
-        }
-        stage('Publish HTML Report') {
-            steps {
-                // Use the publishHTML step to archive and display the generated file
-                publishHTML (
-                    target: [
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: '.', // Directory containing the report file (root)
-                        reportFiles: 'output_report.html', // The specific file to display
-                        reportName: 'Build Step Output' // The name of the link in Jenkins UI
-                    ]
-                )
             }
         }
     }
@@ -63,7 +48,7 @@ pipeline {
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
                     reportDir: '.', // Directory relative to workspace where report.html is located
-                    reportFiles: 'report.html', // The main HTML file to display
+                    reportFiles: 'output_report.html', // The main HTML file to display
                     reportName: 'Custom Build Output' // Name of the link that appears in Jenkins UI
                 ]
             )
