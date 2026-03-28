@@ -29,25 +29,9 @@ pipeline {
                 }
             }
         }
-        stage('Generate Report') {
-            steps {
-                bat 'echo "<html><body><h2>Last Build Output Summary</h2><p>This is a custom HTML report.</p></body></html>" >> output_report.html'
-            }
-        }
     }
     post {
         always {
-            // Publish the generated HTML report
-            publishHTML(
-                target: [
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: '.', // Directory relative to workspace where report.html is located
-                    reportFiles: 'output_report.html', // The main HTML file to display
-                    reportName: 'Custom Build Output' // Name of the link that appears in Jenkins UI
-                ]
-            )
             script {
                 if (currentBuild.result == 'SUCCESS') {
                     echo 'Build successful! It will send an email'
