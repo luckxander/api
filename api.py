@@ -86,8 +86,8 @@ def api(endpoint, method, updated_data, headers):
         #     # "Authorization": "Bearer YOUR_ACCESS_TOKEN"
         # }
 
-# Test Case 1
-def testCase1get(endpoint, method, updated_data, headers):
+# Test Case 1 
+def testCase1getHappy(endpoint, method, updated_data, headers):
     print("Test Case #1 Get Method")
     api(endpoint=endpoint, method=method, updated_data=updated_data, headers=headers)
 
@@ -95,7 +95,7 @@ endpoint = "https://jsonplaceholder.typicode.com/posts/1"
 method = "GET"
 updated_data = "1"
 headers = {"Content-Type": "application/json; charset=utf-8"}
-result = testCase1get(endpoint, method, updated_data, headers)
+result = testCase1getHappy(endpoint, method, updated_data, headers)
 
 # Test Case 2
 def testCase2post(endpoint, method, updated_data, headers):
