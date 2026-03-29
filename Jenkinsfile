@@ -24,7 +24,7 @@ pipeline {
             steps {
                 // Automatically aborts after 10 minutes
                 timeout(time: 1, unit: 'MINUTES') {
-                    // Execute the Python script and print real time output
+                    // Execute the Python script and print real time output to console
                     bat 'python -u C:\\Python\\api\\api.py'
                 }
             }
