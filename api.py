@@ -13,18 +13,8 @@ def api(endpoint, method, updated_data, headers, code):
             data = response.json()
             if response.status_code == 200:       
                 print("Request successful. Data retrieved:")                             
-                if isinstance(data, list):
-                    print(f"Fetched {len(data)} items.")
-                    for item in data:
-                        userId = item.get('userId')
-                        target_Value = 10
-                        if userId == target_Value:
-                            print(f"ID: {item.get('id')}, userId: {item.get('userId')}, title: {item.get('title')}")      
-                        else:
-                            print(f"userId: is not {target_Value}, it is {userId}")                         
-                else:
-                    print("The response was not a JSON array (list). It might be an object (dictionary).")      
-                    print(f"Formatted data: {json.dumps(data, indent=2)}")  
+                print("The response was not a JSON array (list). It might be an object (dictionary).")      
+                print(f"Formatted data: {json.dumps(data, indent=2)}")  
             else:     
                 if response.status_code == code:
                     print(f"Success: Althought {code} is an error code, it is a negative test!") 
